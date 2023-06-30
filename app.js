@@ -1,26 +1,23 @@
-const express = require('express');
+const express = require("express");
 
 const app = express();
-const routes = require('./routes');
-
-const TodoService = require('./services/TodoService');
-const UserService = require('./services/UserService');
+const routes = require("./routes");
 
 module.exports = (config) => {
   const log = config.log();
 
-  const todoService = new TodoService();
-  const userService = new UserService();
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
 
   // Add a request logging middleware in development mode
-  if (app.get('env') === 'development') {
+  if (app.get("env") === "development") {
     app.use((req, res, next) => {
       log.debug(`${req.method}: ${req.url}`);
       return next();
     });
   }
 
-  app.use('/', routes({ todoService, userService }));
+  app.use("/", routes(config));
 
   // eslint-disable-next-line no-unused-vars
   app.use((error, req, res, next) => {
@@ -33,5 +30,6 @@ module.exports = (config) => {
       },
     });
   });
+
   return app;
 };

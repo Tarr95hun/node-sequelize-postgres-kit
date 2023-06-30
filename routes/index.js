@@ -1,17 +1,16 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const todosRoute = require('./todos');
-const usersRoute = require('./users');
+const tweetsRoute = require("./tweets");
+const usersRoute = require("./users");
 
-module.exports = (params) => {
-
-  router.get('/', (req, res) => {
-    res.send('Home Page');
+module.exports = (config) => {
+  router.get("/", (req, res) => {
+    res.send("Home Page");
   });
 
-  router.use('/todo', todosRoute(params.todoService));
-  router.use('/user', usersRoute(params.userService));
+  router.use("/todo", tweetsRoute(config));
+  router.use("/user", usersRoute(config));
 
   return router;
 };
