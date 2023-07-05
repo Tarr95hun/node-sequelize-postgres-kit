@@ -8,10 +8,24 @@ module.exports = (config) => {
   const userService = new UserService(config.postgres.client);
   const tweetService = new TweetService(config.postgres.client);
 
-  router.get("/", async (req, res) => {
+  router.post("/create", async (req, res, next) => {
     try {
-      const tweet = null;
-      res.send(tweet);
+      const user = await userService.findOneUser();
+      const tweet = await tweetService.createTweet(
+        user.id,
+        req.body.title,
+        req.body.description
+      );
+      res.send({ user, tweet });
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  router.get("/all", async (req, res, next) => {
+    try {
+      const tweetList = await tweetService.getAllTweets();
+      res.send(tweetList);
     } catch (err) {
       return next(err);
     }

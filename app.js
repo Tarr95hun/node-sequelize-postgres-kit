@@ -6,7 +6,7 @@ const routes = require("./routes");
 module.exports = (config) => {
   const log = config.log();
 
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.urlencoded({ extended: true })); // body parser
   app.use(express.json());
 
   // Add a request logging middleware in development mode
